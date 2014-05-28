@@ -1,6 +1,8 @@
 ---
 
 wale_enabled: yes                     # The role is enabled
+wale_remove: no                       # Uninstall the role
+
 wale_home: /etc/wale                  # Where make runscript
 wale_logdir: /var/log/wale            # Where store logs
 wale_user: "postgres"
