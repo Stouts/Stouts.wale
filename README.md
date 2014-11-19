@@ -52,7 +52,7 @@ Example:
 
   roles:
     - Ansibles.postgresql
-    - Stouts.wsgi
+    - Stouts.wale
 
   vars:
     postgresql_wal_level: hot_standby
