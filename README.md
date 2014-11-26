@@ -1,7 +1,7 @@
 Stouts.wal-e
 ============
 
-[![Build Status](https://travis-ci.org/Stouts/Stouts.wale.png)](https://travis-ci.org/Stouts/Stouts.wale)
+[![Build Status](http://img.shields.io/travis/Stouts/Stouts.wale.svg?style=flat-square)](https://travis-ci.org/Stouts/Stouts.wale)
 
 Ansible role which performs continuous archiving of PostgreSQL WAL files
 
