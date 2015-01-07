@@ -4,7 +4,7 @@
   user: name={{ wale_user }}
 - group: name={{ wale_group }}
 
-- name: Ensure wale home is exists
+- name: Ensure wale home exists
   file: >
     group={{ wale_group }}
     owner={{ wale_user }}
@@ -16,7 +16,7 @@
   template: >
     dest={{ wale_home }}/wale.sh
     group={{ wale_group }}
-    mode=744
+    mode=0750
     owner={{ wale_user }}
     src=wale.sh.j2
 
