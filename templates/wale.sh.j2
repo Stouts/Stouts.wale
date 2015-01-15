@@ -29,7 +29,9 @@ exit 2
 
 _do_wale() {
     touch $LOCKFILE
-    $WALE $1 $2 $3 >> $LOGFILE 2>&1 
+    # Using tee -a instead of >> so we can additionally pipe output somewhere
+    # else, if desired.
+    $WALE $1 $2 $3 2>&1 | tee -a $LOGFILE
     RETVAL=$?
     rm -f $LOCKFILE
     return $RETVAL
