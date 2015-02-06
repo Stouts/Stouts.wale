@@ -20,7 +20,8 @@ wale_user: "postgres"
 wale_group: "postgres"
 wale_cron: []                          # Setup cronjobs
                                        # Ex. wale_cron:
-                                       #     - { schedule: 0 2 * * *, cmd: backup-push /var/lib/postgresql/9.1/main/ }
+                                       #     - { schedule: "0 2 * * *", cmd: "backup-push /var/lib/postgresql/{{postgresql_version}}/main/" }
+                                       #     - { schedule: "0 3 * * *", cmd: "delete --confirm retain 7" }
 
 # Set the credentials for enable upload to AWS S3
 wale_aws_access_key_id:               
@@ -67,6 +68,7 @@ Example:
     wale_aws_s3_prefix: s3://<bucket>/{{inventory_hostname}}
     wale_cron:
       - { schedule: "0 2 * * *", cmd: "backup-push /var/lib/postgresql/{{postgresql_version}}/main" }
+      - { schedule: "0 3 * * *", cmd: "delete --confirm retain 7" }
 
 ```
 
