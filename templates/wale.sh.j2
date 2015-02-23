@@ -27,13 +27,25 @@ echo "Please setup Wal-e settings in the role" 1>&2
 exit 2
 {% endif %}
 
+_do_wale_locked() {
+    # Re-execute this script under flock if $FLOCK is empty/undefined. This
+    # creates the lockfile if necessary.
+    if [ -z "$FLOCK" ] ; then
+        LOCKOPTS="-w 0 $LOCKFILE"
+        exec env FLOCK=1 flock $LOCKOPTS $0 "$@"
+    fi
+
+    _do_wale $1 $2 $3
+    RETVAL=$?
+    rm -f $LOCKFILE
+    return $RETVAL
+}
+
 _do_wale() {
-    touch $LOCKFILE
     # Using tee -a instead of >> so we can additionally pipe output somewhere
     # else, if desired.
     $WALE $1 $2 $3 2>&1 | tee -a $LOGFILE
     RETVAL=$?
-    rm -f $LOCKFILE
     return $RETVAL
 }
 
@@ -53,13 +65,11 @@ case "$1" in
         ;;
 
     backup-push)
-        status && exit 0
-        _do_wale $1 $2 $3
+        _do_wale_locked $1 $2 $3
         ;;
 
     backup-fetch)
-        status && exit 0
-        _do_wale $1 $2 $3
+        _do_wale_locked $1 $2 $3
         ;;
 
     backup-list)
@@ -67,17 +77,15 @@ case "$1" in
         ;;
 
     wal-push)
-        status && exit 0
         _do_wale $1 $2 $3
         ;;
 
     wal-fetch)
-        status && exit 0
         _do_wale $1 $2 $3
         ;;
 
     *)
-        echo "Usage: $0 {backup-push|backup-fetch|backup-list|wall-push|wall-fetch|status}"
+        echo "Usage: $0 {backup-push|backup-fetch|backup-list|wal-push|wal-fetch|status}"
         exit 2
 
 esac
