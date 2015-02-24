@@ -76,8 +76,13 @@ case "$1" in
         _do_wale $1 $2 $3
         ;;
 
+    delete)
+        status && exit 0
+        _do_wale $1 $2 $3 $4
+        ;;
+
     *)
-        echo "Usage: $0 {backup-push|backup-fetch|backup-list|wall-push|wall-fetch|status}"
+        echo "Usage: $0 {backup-push|backup-fetch|backup-list|wall-push|wall-fetch|delete|status}"
         exit 2
 
 esac
