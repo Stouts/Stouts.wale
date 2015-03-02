@@ -11,4 +11,7 @@
     - python-lxml
 
 - name: Install requirements - pt. 2
-  pip: name=wal-e
+  pip: name={{item}} state=latest
+  with_items:
+    - six
+    - wal-e
