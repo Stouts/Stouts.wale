@@ -14,4 +14,8 @@
   pip: name={{item}} state=latest
   with_items:
     - six
+
+- name: Install requirements - pt. 3
+  pip: name={{item}}
+  with_items:
     - wal-e

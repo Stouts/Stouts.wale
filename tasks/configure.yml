@@ -14,7 +14,7 @@
 
 - name: Configure wale
   template: >
-    dest={{ wale_home }}/wale.sh
+    dest={{ wale_runscript_path }}
     group={{ wale_group }}
     mode=0750
     owner={{ wale_user }}

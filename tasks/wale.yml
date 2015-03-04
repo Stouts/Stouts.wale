@@ -6,5 +6,8 @@
 - include: configure.yml
   when: not wale_remove
 
+- include: initial_backup.yml
+  when: not wale_remove and wale_do_initial_backup
+
 - include: remove.yml
   when: wale_remove
