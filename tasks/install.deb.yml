@@ -11,11 +11,9 @@
     - python-lxml
 
 - name: Install requirements - pt. 2
-  pip: name={{item}} state=latest
-  with_items:
-    - six
-
-- name: Install requirements - pt. 3
   pip: name={{item}}
   with_items:
+    # Require this minimum version of six to avoid WAL-E DistributionNotFound
+    # error.
+    - six>=1.7.0
     - wal-e
