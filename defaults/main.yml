@@ -6,6 +6,7 @@ wale_remove: no                       # Uninstall the role
 wale_home: /etc/wale                  # Where to place runscript
 wale_runscript_path: "{{ wale_home }}/wale.sh"
 wale_logdir: /var/log/wale            # Where to store logs
+wale_lockfile: /var/lock/wale
 wale_user: "postgres"
 wale_group: "postgres"
 wale_cron: []                          # Setup cronjobs

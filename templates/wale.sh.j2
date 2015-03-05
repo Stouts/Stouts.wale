@@ -4,8 +4,8 @@
 # Do NOT modify this file by hand!
 
 WALE=/usr/local/bin/wal-e
-LOCKFILE=/var/lock/wale
-LOGFILE={{ wale_logdir }}/wale.log
+LOCKFILE="{{ wale_lockfile }}"
+LOGFILE="{{ wale_logdir }}/wale.log"
 [ -f $LOGFILE ] || touch $LOGFILE
 
 {% if wale_aws_access_key_id and wale_aws_secret_access_key and wale_aws_s3_prefix %}
