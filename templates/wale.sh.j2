@@ -6,34 +6,46 @@
 WALE=/usr/local/bin/wal-e
 LOCKFILE=/var/lock/wale
 LOGFILE={{ wale_logdir }}/wale.log
-[ -f $LOGGILE ] || touch $LOGFILE
+[ -f $LOGFILE ] || touch $LOGFILE
 
 {% if wale_aws_access_key_id and wale_aws_secret_access_key and wale_aws_s3_prefix %}
-export AWS_ACCESS_KEY_ID={{ wale_aws_access_key_id }}
-export AWS_SECRET_ACCESS_KEY={{ wale_aws_secret_access_key }}
-export WALE_S3_PREFIX={{ wale_aws_s3_prefix }}
+export AWS_ACCESS_KEY_ID='{{ wale_aws_access_key_id }}'
+export AWS_SECRET_ACCESS_KEY='{{ wale_aws_secret_access_key }}'
+export WALE_S3_PREFIX='{{ wale_aws_s3_prefix }}'
 {% elif wale_wabs_account_name and wale_wabs_access_key and wale_wabs_prefix %}
-export WABS_ACCOUNT_NAME={{ wale_wabs_account_name }}
-export WABS_ACCESS_KEY={{ wale_wabs_access_key }}
-export WALE_WABS_PREFIX={{ wale_wabs_prefix }}
+export WABS_ACCOUNT_NAME='{{ wale_wabs_account_name }}'
+export WABS_ACCESS_KEY='{{ wale_wabs_access_key }}'
+export WALE_WABS_PREFIX='{{ wale_wabs_prefix }}'
 {% elif wale_swift_authurl and wale_swift_tenant and wale_swift_user and wale_swift_password and wale_swift_prefix %}
-export SWIFT_AUTHURL={{ wale_swift_authurl }}
-export SWIFT_TENANT={{ wale_swift_tenant }}
-export SWIFT_USER={{ wale_swift_user }}
-export SWIFT_PASSWORD={{ wale_swift_password }}
-export WALE_SWIFT_PREFIX={{ wale_swift_prefix }}
+export SWIFT_AUTHURL='{{ wale_swift_authurl }}'
+export SWIFT_TENANT='{{ wale_swift_tenant }}'
+export SWIFT_USER='{{ wale_swift_user }}'
+export SWIFT_PASSWORD='{{ wale_swift_password }}'
+export WALE_SWIFT_PREFIX='{{ wale_swift_prefix }}'
 {% else %}
 echo "Please setup Wal-e settings in the role" 1>&2
 exit 2
 {% endif %}
 
-_do_wale() {
-    touch $LOCKFILE
-    # Using tee -a instead of >> so we can additionally pipe output somewhere
-    # else, if desired.
-    $WALE $1 $2 $3 2>&1 | tee -a $LOGFILE
+_do_wale_locked() {
+    # Re-execute this script under flock if $FLOCK is empty/undefined. This
+    # creates the lockfile if necessary.
+    if [ -z "$FLOCK" ] ; then
+        LOCKOPTS="-w 0 $LOCKFILE"
+        exec env FLOCK=1 flock $LOCKOPTS $0 "$@"
+    fi
+
+    _do_wale $@
     RETVAL=$?
     rm -f $LOCKFILE
+    return $RETVAL
+}
+
+_do_wale() {
+    # Using tee -a instead of >> so we can additionally pipe output somewhere
+    # else, if desired.
+    $WALE $@ 2>&1 | tee -a $LOGFILE
+    RETVAL=$?
     return $RETVAL
 }
 
@@ -53,13 +65,11 @@ case "$1" in
         ;;
 
     backup-push)
-        status && exit 0
-        _do_wale $1 $2 $3
+        _do_wale_locked $@
         ;;
 
     backup-fetch)
-        status && exit 0
-        _do_wale $1 $2 $3
+        _do_wale_locked $@
         ;;
 
     backup-list)
@@ -67,22 +77,19 @@ case "$1" in
         ;;
 
     wal-push)
-        status && exit 0
-        _do_wale $1 $2 $3
+        _do_wale $@
         ;;
 
     wal-fetch)
-        status && exit 0
-        _do_wale $1 $2 $3
+        _do_wale $@
         ;;
 
     delete)
-        status && exit 0
-        _do_wale $1 $2 $3 $4
+        _do_wale $@
         ;;
 
     *)
-        echo "Usage: $0 {backup-push|backup-fetch|backup-list|wall-push|wall-fetch|delete|status}"
+        echo "Usage: $0 {backup-push|backup-fetch|backup-list|wal-push|wal-fetch|delete|status}"
         exit 2
 
 esac
