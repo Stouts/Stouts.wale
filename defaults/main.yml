@@ -2,6 +2,7 @@
 
 wale_enabled: yes                     # The role is enabled
 wale_remove: no                       # Uninstall the role
+wale_latest: no                       # Install the latest WAL-E package
 
 wale_home: /etc/wale                  # Where to place runscript
 wale_logdir: /var/log/wale            # Where to store logs
