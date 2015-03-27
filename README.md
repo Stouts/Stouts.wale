@@ -14,26 +14,28 @@ The role variables and default values.
 
 ```yaml
 wale_enabled: yes                     # The role is enabled
-wale_home: /etc/wale                  # Where make runscript
-wale_logdir: /var/log/wale            # Where store logs
+wale_remove: no                       # Uninstall the role
+wale_latest: no                       # Install the latest WAL-E package
+
+wale_home: /etc/wale                  # Where to place runscript
+wale_logdir: /var/log/wale            # Where to store logs
 wale_user: "postgres"
 wale_group: "postgres"
 wale_cron: []                          # Setup cronjobs
                                        # Ex. wale_cron:
-                                       #     - { schedule: "0 2 * * *", cmd: "backup-push /var/lib/postgresql/{{postgresql_version}}/main/" }
-                                       #     - { schedule: "0 3 * * *", cmd: "delete --confirm retain 7" }
+                                       #     - { schedule: * * * * *, cmd: backup-push /var/lib/postgresql/9.1/main/ }
 
-# Set the credentials for enable upload to AWS S3
-wale_aws_access_key_id:               
+# Set these credentials to enable upload to AWS S3
+wale_aws_access_key_id:
 wale_aws_secret_access_key:
 wale_aws_s3_prefix:
 
-# Set the credentials for enable upload to WABS
-wale_wabs_account_name:               
+# Set these credentials to enable upload to WABS
+wale_wabs_account_name:
 wale_wabs_access_key:
 wale_wabs_prefix:
 
-# Set the credentials for enable upload to SWIFT
+# Set these credentials to enable upload to SWIFT
 wale_swift_authurl:
 wale_swift_tenant:
 wale_swift_user:
