@@ -9,6 +9,7 @@
     - python-pip
     - python-dev
     - python-lxml
+    - libffi-dev
 
 - name: Install requirements - pt. 2
   pip: name={{item}}
