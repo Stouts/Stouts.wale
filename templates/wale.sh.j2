@@ -4,8 +4,8 @@
 # Do NOT modify this file by hand!
 
 WALE=/usr/local/bin/wal-e
-LOCKFILE=/var/lock/wale
-LOGFILE={{ wale_logdir }}/wale.log
+LOCKFILE="{{ wale_lockfile }}"
+LOGFILE="{{ wale_logdir }}/wale.log"
 [ -f $LOGFILE ] || touch $LOGFILE
 
 {% if wale_aws_access_key_id and wale_aws_secret_access_key and wale_aws_s3_prefix %}
@@ -42,6 +42,9 @@ _do_wale_locked() {
 }
 
 _do_wale() {
+    # Want exit status of pipeline to be unsuccessful if either wal-e or tee
+    # was unsuccessful.
+    set -o pipefail
     # Using tee -a instead of >> so we can additionally pipe output somewhere
     # else, if desired.
     $WALE $@ 2>&1 | tee -a $LOGFILE
