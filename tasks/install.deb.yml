@@ -1,15 +1,15 @@
 ---
 
 - name: Install requirements - pt. 1
-  apt: pkg={{item}}
+  apt: name={{item}} update_cache=yes
   with_items:
     - cron
+    - libffi-dev
     - lzop
     - pv
-    - python-pip
     - python-dev
     - python-lxml
-    - libffi-dev
+    - python-pip
 
 - name: Install requirements - pt. 2
   pip: name={{item}}
