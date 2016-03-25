@@ -20,6 +20,7 @@ wale_initial_backup_command: "backup-push /var/lib/postgresql/{{postgresql_versi
 # Set these credentials to enable upload to AWS S3
 wale_aws_access_key_id:
 wale_aws_secret_access_key:
+wale_aws_region:
 wale_aws_s3_prefix:
 
 # Set these credentials to enable upload to WABS
