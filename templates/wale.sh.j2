@@ -8,9 +8,10 @@ LOCKFILE="{{ wale_lockfile }}"
 LOGFILE="{{ wale_logdir }}/wale.log"
 [ -f $LOGFILE ] || touch $LOGFILE
 
-{% if wale_aws_access_key_id and wale_aws_secret_access_key and wale_aws_s3_prefix %}
+{% if wale_aws_access_key_id and wale_aws_secret_access_key and wale_aws_region and wale_aws_s3_prefix %}
 export AWS_ACCESS_KEY_ID='{{ wale_aws_access_key_id }}'
 export AWS_SECRET_ACCESS_KEY='{{ wale_aws_secret_access_key }}'
+export AWS_REGION='{{ wale_aws_region }}'
 export WALE_S3_PREFIX='{{ wale_aws_s3_prefix }}'
 {% elif wale_wabs_account_name and wale_wabs_access_key and wale_wabs_prefix %}
 export WABS_ACCOUNT_NAME='{{ wale_wabs_account_name }}'
