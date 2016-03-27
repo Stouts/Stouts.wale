@@ -28,6 +28,7 @@ wale_cron: []                          # Setup cronjobs
 # Set these credentials to enable upload to AWS S3
 wale_aws_access_key_id:
 wale_aws_secret_access_key:
+wale_aws_region:
 wale_aws_s3_prefix:
 
 # Set these credentials to enable upload to WABS
@@ -67,6 +68,7 @@ Example:
 # ===========
     wale_aws_access_key_id: <access_key>
     wale_aws_secret_access_key: <secret_key>
+    wale_aws_region: <region>
     wale_aws_s3_prefix: s3://<bucket>/{{inventory_hostname}}
     wale_cron:
       - { schedule: "0 2 * * *", cmd: "backup-push /var/lib/postgresql/{{postgresql_version}}/main" }
