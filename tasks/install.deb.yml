@@ -12,11 +12,13 @@
     - python-pip
 
 - name: Install requirements - pt. 2
-  pip: name={{item}}
-  with_items: [six, wal-e]
+  pip: name={{item}} state=latest
+  with_items: [six, requests]
+
+- name: Install wal-e 0.9.2
+  pip: name=wal-e version=0.9.2
   when: not wale_latest
 
-- name: Install requirements - pt. 2
-  pip: name={{item}} state=latest
-  with_items: [six, wal-e]
+- name: Install latest wal-e
+  pip: name=wal-e state=latest
   when: wale_latest
