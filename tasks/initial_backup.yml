@@ -4,9 +4,11 @@
   command: "{{ wale_runscript_path }} backup-list"
   register: wale_backup_list_result
   changed_when: False
-  sudo_user: "{{ wale_user }}"
+  become: true
+  become_user: "{{ wale_user }}"
 
 - name: Perform initial base backup
   command: "{{ wale_runscript_path }} {{ wale_initial_backup_command }}"
   when: wale_backup_list_result.stdout_lines|length == 1
-  sudo_user: "{{ wale_user }}"
+  become: true
+  become_user: "{{ wale_user }}"
